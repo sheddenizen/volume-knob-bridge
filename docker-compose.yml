@@ -1,0 +1,14 @@
+services:
+  volume_knob_bridge:
+    container_name: volume_knob_bridge
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    extra_hosts:
+      # So HA_URL can reach the homeassistant container's published port from here, without
+      # sharing a docker network. Once HA moves to another host, point HA_URL at it directly
+      # instead and this line becomes unnecessary (harmless to leave in either way).
+      - "host.docker.internal:host-gateway"
+    environment:
+      PYTHONUNBUFFERED: "1"
+      TZ: Europe/London
